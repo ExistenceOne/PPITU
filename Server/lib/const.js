@@ -28,7 +28,7 @@ exports.BLOCKED_LENGTH = 10000;
 exports.KICK_BY_SPAM = 9;
 exports.MAX_OBSERVER = 4;
 exports.TESTER = GLOBAL.ADMIN.concat([
-	"Input tester id here"
+	"github-121415293", "github-121417786"
 ]);
 exports.IS_SECURED = GLOBAL.IS_SECURED;
 exports.SSL_OPTIONS = GLOBAL.SSL_OPTIONS;
@@ -40,7 +40,9 @@ exports.OPTIONS = {
 	'prv': { name: "Proverb" },
 	'str': { name: "Strict" },
 	'k32': { name: "Sami" },
-	'no2': { name: "No2" }
+	'no2': { name: "No2" },
+	'spd': { name: "Chospeed" },
+	'pnm': { name: "PMission"}
 };
 exports.MOREMI_PART = [ 'back', 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand', 'front' ];
 exports.CATEGORIES = [ "all", "spec", "skin", "badge", "head", "eye", "mouth", "clothes", "hs", "back" ];
@@ -72,7 +74,7 @@ exports.RULE = {
 */
 	'EKT': { lang: "en",
 		rule: "Classic",
-		opts: [ "man", "ext", "mis" ],
+		opts: [ "man", "ext", "mis", "spd", "pnm" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -80,7 +82,7 @@ exports.RULE = {
 	},
 	'ESH': { lang: "en",
 		rule: "Classic",
-		opts: [ "ext", "mis" ],
+		opts: [ "ext", "mis", "spd", "pnm" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -88,7 +90,7 @@ exports.RULE = {
 	},
 	'KKT': { lang: "ko",
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str", "k32" ],
+		opts: [ "man", "ext", "mis", "loa", "str", "k32", "spd", "pnm" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -96,7 +98,7 @@ exports.RULE = {
 	},
 	'KSH': { lang: "ko",
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str" ],
+		opts: [ "man", "ext", "mis", "loa", "str", "spd", "pnm" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -136,7 +138,7 @@ exports.RULE = {
 	},
 	'KAP': { lang: "ko",
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str" ],
+		opts: [ "man", "ext", "mis", "loa", "str", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -145,7 +147,7 @@ exports.RULE = {
 	},
 	'HUN': { lang: "ko",
 		rule: "Hunmin",
-		opts: [ "ext", "mis", "loa", "str" ],
+		opts: [ "ext", "mis", "loa", "str", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -153,7 +155,7 @@ exports.RULE = {
 	},
 	'KDA': { lang: "ko",
 		rule: "Daneo",
-		opts: [ "ijp", "mis" ],
+		opts: [ "ijp", "mis", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -161,7 +163,7 @@ exports.RULE = {
 	},
 	'EDA': { lang: "en",
 		rule: "Daneo",
-		opts: [ "ijp", "mis" ],
+		opts: [ "ijp", "mis", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -209,14 +211,15 @@ exports.KO_INJEONG = [
 	"HSS", "KMV", "HDC", "HOS"
 ];
 exports.EN_INJEONG = [
-	"LOL"
+	"LOL", "POK", "DMO", "WPM", "GBB"
 ];
 exports.KO_THEME = [
 	"30", "40", "60", "80", "90",
 	"140", "150", "160", "170", "190",
 	"220", "230", "240", "270", "310",
 	"320", "350", "360", "420", "430",
-	"450", "490", "530", "1001"
+	"450", "490", "530", "1001",
+	"600", "601"
 ];
 exports.EN_THEME = [
 	"e05", "e08", "e12", "e13", "e15",

@@ -55,7 +55,7 @@ exports.getTitle = function(){
 	switch(Const.GAME_TYPE[my.mode]){
 		case 'EKT':
 		case 'ESH':
-			eng = "^" + String.fromCharCode(97 + Math.floor(Math.random() * 26));
+			eng = "^" + String.fromCharCode(0 + Math.floor(Math.random() * (97+26)));
 			break;
 		case 'KKT':
 			my.game.wordLength = 3;
@@ -100,7 +100,7 @@ exports.getTitle = function(){
 		var i, list = [];
 		var len;
 		
-		/* ºÎÇÏ°¡ ³Ê¹« °É¸°´Ù¸é ÁÖ¼®À» Ç®ÀÚ.
+		/* ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ê¹ï¿½ ï¿½É¸ï¿½ï¿½Ù¸ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½.
 		R.go(true);
 		return R;
 		*/
@@ -133,14 +133,14 @@ exports.roundReady = function(){
 		my.game.char = my.game.title[my.game.round - 1];
 		my.game.subChar = getSubChar.call(my, my.game.char);
 		my.game.chain = [];
-		if(my.opts.mission) my.game.mission = getMission(my.rule.lang);
+		if(my.opts.mission || my.opts.pmission) my.game.mission = getMission(my.rule.lang);
 		if(my.opts.sami) my.game.wordLength = 2;
 		
 		my.byMaster('roundReady', {
 			round: my.game.round,
 			char: my.game.char,
 			subChar: my.game.subChar,
-			mission: my.game.mission
+			mission: my.game.mission,
 		}, true);
 		my.game.turnTimer = setTimeout(my.turnStart, 2400);
 	}else{
@@ -154,7 +154,7 @@ exports.turnStart = function(force){
 	
 	if(!my.game.chain) return;
 	my.game.roundTime = Math.min(my.game.roundTime, Math.max(10000, 150000 - my.game.chain.length * 1500));
-	speed = my.getTurnSpeed(my.game.roundTime);
+	speed = (my.opts.chospeed) ? 10 : my.getTurnSpeed(my.game.roundTime);
 	clearTimeout(my.game.turnTimer);
 	clearTimeout(my.game.robotTimer);
 	my.game.late = false;
@@ -312,14 +312,16 @@ exports.submit = function(client, text){
 exports.getScore = function(text, delay, ignoreMission){
 	var my = this;
 	var tr = 1 - delay / my.game.turnTime;
-	var score, arr;
+	var score, arr, bonus;
 	
 	if(!text || !my.game.chain || !my.game.dic) return 0;
 	score = Const.getPreScore(text, my.game.chain, tr);
 	
 	if(my.game.dic[text]) score *= 15 / (my.game.dic[text] + 15);
 	if(!ignoreMission) if(arr = text.match(new RegExp(my.game.mission, "g"))){
-		score += score * 0.5 * arr.length;
+		bonus = score * 0.5 * arr.length;
+		bonus *= (my.opts.pmission) ? -1 : 0;
+		score += bonus;
 		my.game.mission = true;
 	}
 	return Math.round(score);
@@ -412,9 +414,9 @@ function getMission(l){
 }
 function getAuto(char, subc, type){
 	/* type
-		0 ¹«ÀÛÀ§ ´Ü¾î ÇÏ³ª
-		1 Á¸Àç ¿©ºÎ
-		2 ´Ü¾î ¸ñ·Ï
+		0 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ü¾ï¿½ ï¿½Ï³ï¿½
+		1 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		2 ï¿½Ü¾ï¿½ ï¿½ï¿½ï¿½
 	*/
 	var my = this;
 	var R = new Lizard.Tail();
@@ -445,7 +447,7 @@ function getAuto(char, subc, type){
 	if(!char){
 		console.log(`Undefined char detected! key=${key} type=${type} adc=${adc}`);
 	}
-	MAN.findOne([ '_id', char || "¡Ú" ]).on(function($mn){
+	MAN.findOne([ '_id', char || "ï¿½ï¿½" ]).on(function($mn){
 		if($mn && bool){
 			if($mn[key] === null) produce();
 			else R.go($mn[key]);
@@ -545,12 +547,12 @@ function getSubChar(char){
 			ca = [ Math.floor(k/28/21), Math.floor(k/28)%21, k%28 ];
 			cb = [ ca[0] + 0x1100, ca[1] + 0x1161, ca[2] + 0x11A7 ];
 			cc = false;
-			if(cb[0] == 4357){ // ¤©¿¡¼­ ¤¤, ¤·
+			if(cb[0] == 4357){ // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½
 				cc = true;
 				if(RIEUL_TO_NIEUN.includes(cb[1])) cb[0] = 4354;
 				else if(RIEUL_TO_IEUNG.includes(cb[1])) cb[0] = 4363;
 				else cc = false;
-			}else if(cb[0] == 4354){ // ¤¤¿¡¼­ ¤·
+			}else if(cb[0] == 4354){ // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 				if(NIEUN_TO_IEUNG.indexOf(cb[1]) != -1){
 					cb[0] = 4363;
 					cc = true;

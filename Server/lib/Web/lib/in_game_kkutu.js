@@ -1073,7 +1073,7 @@ $lib.Classic.roundReady = function(data){
 	$data._roundTime = $data.room.time * 1000;
 	$stage.game.display.html(getCharText(data.char, data.subChar));
 	$stage.game.chain.show().html($data.chain = 0);
-	if($data.room.opts.mission){
+	if($data.room.opts.mission || $data.room.opts.pmission){
 		$stage.game.items.show().css('opacity', 1).html($data.mission = data.mission);
 	}
 	if(MODE[$data.room.mode] == "KAP"){
@@ -1165,10 +1165,10 @@ $lib.Classic.turnEnd = function(id, data){
 			.append($("<label>").css('color', "#AAAAAA").html(data.hint.slice(hi + 1)));
 	}
 	if(data.bonus){
-		mobile ? $sc.html("+" + (b.score - b.bonus) + "+" + b.bonus) : addTimeout(function(){
+		mobile ? $sc.html("+" + (b.score - b.bonus) + (b.bonus > 0 ? "+" : "") + b.bonus) : addTimeout(function(){
 			var $bc = $("<div>")
 				.addClass("deltaScore bonus")
-				.html("+" + data.bonus);
+				.html((data.bonus > 0 ? "+" : "") + data.bonus);
 			
 			drawObtainedScore($uc, $bc);
 		}, 500);
