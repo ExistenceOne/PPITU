@@ -42,7 +42,7 @@ exports.OPTIONS = {
 	'k32': { name: "Sami" },
 	'no2': { name: "No2" },
 	'spd': { name: "Chospeed" },
-	'pnm': { name: "PMission"}
+	/*'pnm': { name: "PMission"}*/
 };
 exports.MOREMI_PART = [ 'back', 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand', 'front' ];
 exports.CATEGORIES = [ "all", "spec", "skin", "badge", "head", "eye", "mouth", "clothes", "hs", "back" ];
@@ -74,7 +74,7 @@ exports.RULE = {
 */
 	'EKT': { lang: "en",
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "spd", "pnm" ],
+		opts: [ "man", "ext", "mis", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -82,7 +82,7 @@ exports.RULE = {
 	},
 	'ESH': { lang: "en",
 		rule: "Classic",
-		opts: [ "ext", "mis", "spd", "pnm" ],
+		opts: [ "ext", "mis", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -90,7 +90,7 @@ exports.RULE = {
 	},
 	'KKT': { lang: "ko",
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str", "k32", "spd", "pnm" ],
+		opts: [ "man", "ext", "mis", "loa", "str", "k32", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -98,7 +98,7 @@ exports.RULE = {
 	},
 	'KSH': { lang: "ko",
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str", "spd", "pnm" ],
+		opts: [ "man", "ext", "mis", "loa", "str", "spd" ],
 		time: 1,
 		ai: true,
 		big: false,
