@@ -48,6 +48,7 @@ var $data = {};
 var $lib = { Classic: {}, Jaqwi: {}, Crossword: {}, Typing: {}, Hunmin: {}, Daneo: {}, Sock: {} };
 var $rec;
 var mobile;
+var isWelcome = false;
 
 var audioContext = window.hasOwnProperty("AudioContext") ? (new AudioContext()) : false;
 var _WebSocket = window['WebSocket'];
@@ -841,13 +842,26 @@ $(document).ready(function(){
 		});
 	});
 	$stage.dialog.dressOK.on('click', function(e){
+		var data = {};
+		
 		$(e.currentTarget).attr('disabled', true);
-		$.post("/exordial", { data: $("#dress-exordial").val() }, function(res){
-			$stage.dialog.dressOK.attr('disabled', false);
+		
+		if($("#dress-nickname").val() !== $data.nickname) data.nickname = $("#dress-nickname").val();
+		if($("#dress-exordial").val() !== $data.exordial) data.exordial = $("#dress-exordial").val();
+		
+		if(confirm(L.sureChangeNick)) $.post("/profile", data, function(res){
 			if(res.error) return fail(res.error);
-			
-			$stage.dialog.dress.hide();
+			if(data.nickname){
+				$data.users[$data.id].nickname = $data.nickname = data.nickname;
+				$("#account-info").text(data.nickname);
+			}
+			if(data.exordial || data.exordial === "") $data.users[$data.id].exordial = $data.exordial = data.exordial;
+				
+			send("updateProfile", { id: $data.id, nickname: $data.nickname, exordial: $data.exordial });
+			alert(`${data.nickname ? (data.exordial || data.exordial === "" ? L.nickChanged + $data.nickname + L.changed + " " + L.exorChanged + $data.exordial + L.changed : L.nickChanged + $data.nickname + L.changed) : L.exorChanged + $data.exordial + L.changed}`);
+			$stage.dialog.dressOK.attr("disabled", false);
 		});
+		$stage.dialog.dress.hide();
 	});
 	$("#DressDiag .dress-type").on('click', function(e){
 		var $target = $(e.currentTarget);
@@ -1043,8 +1057,14 @@ $(document).ready(function(){
 		};
 		ws.onerror = function(e){
 			console.warn(L['error'], e);
+			isWelcome = false;
 		};
 	}
+	_setInterval(function() {
+		if (isWelcome && !$data.room && !$data._gaming) {
+			send('updateData');
+		}
+	}, 18000);
 });
 
 /**
@@ -2109,6 +2129,8 @@ function onMessage(data){
 			$data._playTime = data.playTime;
 			$data._okg = data.okg;
 			$data._gaming = false;
+			$data.nickname = data.nickname;
+			$data.exordial = data.exordial;
 			$data.box = data.box;
 			if(data.test) alert(L['welcomeTestServer']);
 			if(location.hash[1]) tryJoin(location.hash.slice(1));
@@ -2187,6 +2209,25 @@ function onMessage(data){
 		case 'user':
 			$data.setUser(data.id, data);
 			if($data.room) updateUI($data.room.id == data.place);
+			break;
+		case 'updateProfile':
+			$data.users[data.id].nickname = data.nickname;
+			$data.users[data.id].exordial = data.exordial;
+			break;
+		case 'updateData':
+			$data.id = data.id;
+			$data.guest = data.guest;
+			$data.admin = data.admin;
+			$data.users = data.users;
+			$data.rooms = data.rooms;
+			$data.friends = data.friends;
+			$data._playTime = data.playTime;
+			$data._okg = data.okg;
+			$data.nickname = data.nickname;
+			$data.exordial = data.exordial;
+			$data.box = data.box;
+			updateUI(undefined, true);
+			updateCommunity();
 			break;
 		case 'friends':
 			$data._friends = {};
@@ -2412,6 +2453,8 @@ function welcome(){
 	}, 2000);
 	
 	if($data.admin) console.log("관리자 모드");
+	
+	isWelcome = true;
 }
 function getKickText(profile, vote){
 	var vv = L['agree'] + " " + vote.Y + ", " + L['disagree'] + " " + vote.N + L['kickCon'];
