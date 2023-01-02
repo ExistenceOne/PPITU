@@ -483,8 +483,6 @@ function joinNewUser($c) {
 		id: $c.id,
 		guest: $c.guest,
 		box: $c.box,
-		nickname: $c.nickname,
-		exordial: $c.exordial,
 		playTime: $c.data.playTime,
 		okg: $c.okgCount,
 		users: KKuTu.getUserList(),
